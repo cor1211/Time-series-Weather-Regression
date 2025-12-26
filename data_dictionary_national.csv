@@ -1,0 +1,24 @@
+﻿Tên thuộc tính,Kiểu dữ liệu (Spark),Mô tả ý nghĩa
+Date,date,Ngày quan trắc
+Location,string,Chỉ số trung bình khác
+MinTemp,double,Nhiệt độ thấp nhất trung bình cả nước (°C)
+MaxTemp,double,Nhiệt độ cao nhất trung bình cả nước (°C)
+Rainfall,double,Lượng mưa trung bình cả nước (mm)
+Evaporation,double,Lượng bốc hơi trung bình (mm)
+Sunshine,double,Số giờ nắng trung bình (giờ)
+WindGustDir,string,Chỉ số trung bình khác
+WindGustSpeed,double,Tốc độ gió giật trung bình (km/h)
+WindDir9am,string,Hướng gió thổi lúc 9h sáng
+WindDir3pm,string,Hướng gió thổi lúc 3h chiều
+WindSpeed9am,double,Tốc độ gió trung bình 9h sáng
+WindSpeed3pm,double,Tốc độ gió trung bình 3h chiều
+Humidity9am,double,Độ ẩm trung bình lúc 9h sáng (%)
+Humidity3pm,double,Độ ẩm trung bình lúc 3h chiều (%)
+Pressure9am,double,Áp suất trung bình lúc 9h sáng (hPa)
+Pressure3pm,double,Áp suất trung bình lúc 3h chiều (hPa)
+Cloud9am,double,Lượng mây trung bình lúc 9h sáng (oktas)
+Cloud3pm,double,Lượng mây trung bình lúc 3h chiều (oktas)
+Temp9am,double,Nhiệt độ trung bình lúc 9h sáng (°C)
+Temp3pm,double,Nhiệt độ trung bình lúc 3h chiều (°C)
+RainToday,string,Hôm nay có mưa không? (Yes/No)
+RainTomorrow,string,Ngày mai có mưa không? (Biến mục tiêu)
