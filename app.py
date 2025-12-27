@@ -23,7 +23,7 @@ def get_spark_session():
    if not hasattr(socketserver, "UnixStreamServer"):
       socketserver.UnixStreamServer = socketserver.TCPServer
     
-   # Trỏ đúng đến thư mục bạn vừa cài/tải
+   # Trỏ đúng đến thư mục vừa cài/tải
    os.environ['JAVA_HOME'] = r"D:\software\java11" # Đường dẫn cài Java
    os.environ['HADOOP_HOME'] = r"D:\software\spark" # Thư mục chứa thư mục bin
    os.environ['PATH'] = os.environ['PATH'] + r";D:\software\spark\bin" # Thêm đường dẫn hadoop bin vào PATH
@@ -39,7 +39,7 @@ def get_spark_session():
          .config("spark.driver.host", "127.0.0.1") \
          .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
          .getOrCreate()
-      print("Khởi tạo Spark thành công! Bạn có thể bắt đầu làm bài tập lớn.")
+      print("Khởi tạo Spark thành công!")
       return spark
    except Exception as e:
       print(f"Vẫn còn lỗi: {e}")
@@ -75,7 +75,6 @@ def load_models(model_dir="saved_models"):
 def load_test_data(data_path="test_data.parquet"):
    """
    Load dữ liệu Test. Cache data chuyển sang Pandas để UI chạy nhanh.
-   Lưu ý: Ông cần lưu df_test ra file parquet hoặc csv trước.
    """
    spark = get_spark_session()
    if os.path.exists(data_path):
@@ -103,8 +102,7 @@ def main():
    st.sidebar.header("⚙️ Cấu hình dự báo")
    
    # 1. Load Data
-   # LƯU Ý: Ông cần thay đổi đường dẫn này trỏ đến file test của ông
-   # Nếu đang chạy trên máy local mà chưa lưu file, ông có thể dùng tạm df_test từ session cũ (nhưng web app thường chạy process riêng)
+   # Nếu đang chạy trên máy local mà chưa lưu file
    # Tốt nhất: lưu test_df.write.parquet("test_data.parquet") rồi load lại ở đây.
    test_spark_df = load_test_data("test_data.parquet") 
    
@@ -154,7 +152,7 @@ def main():
    st.subheader(f"📅 Thông tin đầu vào: {selected_date.strftime('%d/%m/%Y')}")
    
    # Hiển thị các chỉ số quá khứ (Lag 1) để người xem nắm bối cảnh
-   # Giả sử tên cột là MinTemp_Lag1, MaxTemp_Lag1... (Thay thế bằng tên cột thật của ông)
+   # Giả sử tên cột là MinTemp_Lag1, MaxTemp_Lag1... 
    cols = st.columns(3)
    try:
       cols[0].metric("MinTemp (Hôm qua)", f"{input_row_pdf['MinTemp_L1'].iloc[0]} °C")
@@ -246,9 +244,7 @@ def main():
    # Logic: Filter ngày > selected_date - 50 và ngày < selected_date + 50
    # Để đơn giản cho demo, ta vẽ 100 ngày *sau* ngày được chọn
    
-   # --- PHẦN 3: BIỂU ĐỒ PHÂN TÍCH ---
- # --- PHẦN 3: BIỂU ĐỒ PHÂN TÍCH (ĐÃ SỬA LỖI KEYERROR) ---
-   st.subheader("📈 Phân tích xu hướng: Nhiệt độ & Lượng mưa (50 ngày tới)")
+   st.subheader("📈 Phân tích xu hướng: Nhiệt độ & Lượng mưa (30 ngày tới)")
    
    # 1. Chuẩn bị dữ liệu vẽ
    start_plot_date = F.date_sub(F.lit(selected_date), 30)
@@ -264,7 +260,7 @@ def main():
    pdf_plot = chart_data.toPandas()
 
    if not pdf_plot.empty:
-      # --- LOGIC DỰ BÁO VÀ MERGE (ĐÃ FIX) ---
+      # --- LOGIC DỰ BÁO VÀ MERGE ---
       
       # 1. Xử lý MinTemp
       key_min = f"{algo_prefix}_Target_MinTemp_D1"
@@ -319,7 +315,6 @@ def main():
          ax1.plot(pdf_plot['Date'], pdf_plot['Target_MaxTemp_D1'], label="Max Thực tế", color='orange', linestyle='-', alpha=0.5)
       ax1.plot(pdf_plot['Date'], pdf_plot['Pred_Max'], label="Max Dự báo", color='red', linestyle='--', linewidth=2)
       
-      # Sửa tiêu đề cho hợp lý
       ax1.set_title(f"Phân tích Bối cảnh (Trước/Sau 30 ngày) - {model_type}", fontweight='bold')
       
       # Thêm một đường kẻ dọc để đánh dấu ngày hiện tại (Ngày T)
@@ -352,7 +347,7 @@ def main():
          for t in ['Target_MinTemp_D1', 'Target_MaxTemp_D1', 'Target_Rainfall_D1']:
                if t in pdf_plot.columns:
                   cols_to_show.insert(1, t)
-         st.dataframe(pdf_plot[cols_to_show].head(10))
+         st.dataframe(pdf_plot[cols_to_show])
          
    else:
       st.warning("Không đủ dữ liệu để vẽ biểu đồ.")

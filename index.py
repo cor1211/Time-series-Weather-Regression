@@ -709,7 +709,7 @@ if __name__ == "__main__":
          .config("spark.driver.host", "127.0.0.1") \
          .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
          .getOrCreate()
-      print("Khởi tạo Spark thành công! Bạn có thể bắt đầu làm bài tập lớn.")
+      print("Khởi tạo Spark thành công!")
    except Exception as e:
       print(f"Vẫn còn lỗi: {e}")
       
@@ -742,7 +742,7 @@ if __name__ == "__main__":
    
    train_set, test_set = split_train_test_chronological(df_ml, train_ratio=0.8)
    # Train và đánh giá mô hình cho Target_MinTemp_D1,
-   
+   # test_set.write.mode("overwrite").parquet("test_data.parquet")
    targets = [
       "Target_MinTemp_D1", "Target_MaxTemp_D1", "Target_Rainfall_D1",
       "Target_MinTemp_D2", "Target_MaxTemp_D2", "Target_Rainfall_D2"
@@ -754,11 +754,11 @@ if __name__ == "__main__":
    # visualize_temperature_trend(df_clean)
    # plot_heatmap(df_clean)
 
-   plot_zoom_index_based(train_set, test_set, targets[2], model_type="rf", window_size=100)
-   plot_zoom_index_based(train_set, test_set, targets[0], model_type="lr", window_size=100)
-   plot_zoom_index_based(train_set, test_set, targets[1], model_type="lr", window_size=100)
-   plot_zoom_index_based(train_set, test_set, targets[2], model_type="lr", window_size=100)
-   plot_zoom_index_based(train_set, test_set, targets[3], model_type="lr", window_size=100)
-   plot_zoom_index_based(train_set, test_set, targets[4], model_type="lr", window_size=100)
-   plot_zoom_index_based(train_set, test_set, targets[5], model_type="lr", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[2], model_type="rf", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[0], model_type="lr", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[1], model_type="lr", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[2], model_type="lr", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[3], model_type="lr", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[4], model_type="lr", window_size=100)
+   # plot_zoom_index_based(train_set, test_set, targets[5], model_type="lr", window_size=100)
    
